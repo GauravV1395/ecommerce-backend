@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listing Categories</title>
+</head>
+<body>
+    <h2>Listing Categories</h2>
+
+    <ul id = "listing">
+
+    </ul>
+    <script>
+        fetch('http://localhost:3000/categories').then((response) => {
+            return response.json();
+        }) .then((categories) =>{
+            let lis = categories.map(function(category){
+                return `<li>${category.name}</li>`;
+            });
+            document.querySelector('#listing').innerHTML = lis.join('');
+        }).catch((err) => {
+            console.log(err);
+        });
+    </script>
+</body>
+</html>
