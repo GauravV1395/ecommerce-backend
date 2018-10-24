@@ -109,7 +109,7 @@ router.delete('/cart_items/:id', validateID, authenticateUser, (req, res) => {
             notice: "successfully removed the product from the cart."
         });
     }).catch((err) => {
-        re.send(err);
+        res.send(err);
     })
 });
 
