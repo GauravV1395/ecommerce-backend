@@ -32,13 +32,13 @@ router.post('/', authenticateUser, authorizeUser, (req, res) => {
 router.get('/:id', validateID, authenticateUser, authorizeUser, (req, res) => {
     let id = req.params.id;
     Product.findById(id).populate('category', 'name').then((product) => { // populate method will return the document category in the category field of the product. 'name' will return the category name to which the product beongs to.
-        if(product){
+        if (product) {
             res.send(product);
-        }else{
+        } else {
             res.send({
-                notice : 'product not found'
+                notice: 'product not found'
             });
-        }    
+        }
     }).catch((err) => {
         res.send(err);
     });
@@ -70,12 +70,12 @@ router.put('/:id', validateID, authenticateUser, authorizeUser, (req, res) => {
 router.delete('/:id', validateID, authenticateUser, authorizeUser, (req, res) => {
     let id = req.params.id;
     Product.findByIdAndRemove(id).then((product) => {
-        if(product){
+        if (product) {
             res.send({
                 product,
                 notice: 'successfully deleted.'
             });
-        }else{
+        } else {
             res.send({
                 notice: 'product not found'
             });
@@ -83,9 +83,28 @@ router.delete('/:id', validateID, authenticateUser, authorizeUser, (req, res) =>
     }).catch((err) => {
         res.send(err);
     });
-})
+});
 
+// find by price only greater than
 
+router.get('/price/value', (req, res) => {
+    let high = req.query.high;
+    let low = req.query.low;
+    if (low && high) {
+        Product.where('price').gte(parseInt(low)).lte(parseInt(high)).then((product) => {
+            res.send(product);
+        })
+    }
+    else if (low) {
+        Product.where('price').gte(parseInt(low)).then((product) => {
+            res.send(product);
+        });
+    } else if (high) {
+        Product.where('price').lte(parseInt(high)).then((product) => {
+            res.send(product);
+        });
+    }
+});
 
 module.exports = {
     productsController: router

@@ -59,7 +59,6 @@ productSchema.statics.findByCategory = function(id){   //static method that has 
 
 const Product = mongoose.model('Product',productSchema);
 
-
 module.exports = {
     Product
 }
